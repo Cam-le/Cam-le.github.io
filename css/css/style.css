@@ -1,0 +1,74 @@
+body {
+    background-color: #dedede;
+}
+
+h1 {
+    text-align: center;
+    font-family: Arial, sans-serif;
+    font-size: 32px;
+}
+
+h2 {
+    text-align: center;
+    font-family: Arial, sans-serif;
+    font-size: 25px;
+}
+
+a {
+    color: #2875B2;
+    text-decoration: none;
+    font-family: Arial, sans-serif;
+}
+
+p {
+    font-size: 25px;
+    font-family: Arial, sans-serif;
+}
+
+img {
+    width: 100%;
+}
+
+
+
+p {
+    text-align: center;
+}
+
+div img {
+    width: 70%;
+    max-height: 30%;
+    display:grid;
+    margin: 0 auto;
+    border:solid 3px #2875B2;
+}
+
+
+@media screen and (min-width: 772px) {
+    div {
+        width: 45%;
+        display: inline-block;
+        margin: 5px;
+        padding: 2px;
+    }
+
+    footer {
+        display: flex;
+        justify-content: center;
+    }
+  
+}
+
+@media screen and (min-width: 998px) {
+    div {
+        width: 30%;
+        display: inline-block;
+        margin: 5px;
+        padding: 2px;
+    }
+  
+}
+
+
+
+
