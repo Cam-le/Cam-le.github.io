@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Cam Le'S TERMINAL - NEON GRID v.85</title>
+  <title>Cam'S TERMINAL - NEON GRID v.85</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     /* Base Styles */
@@ -118,29 +118,17 @@
       50%, 100% { opacity: 0; }
     }
     
-    /* Color Palette Animations */
-    @keyframes colorCycle {
-      0% { color: #0ff; }
-      25% { color: #f0f; }
-      50% { color: #ff0; }
-      75% { color: #0ff; }
-      100% { color: #0ff; }
+    /* Color Cycling for Text */
+    @keyframes textColorCycle {
+      0% { color: #0ff; text-shadow: 0 0 5px #0ff; }
+      33% { color: #f0f; text-shadow: 0 0 5px #f0f; }
+      66% { color: #ff0; text-shadow: 0 0 5px #ff0; }
+      100% { color: #0ff; text-shadow: 0 0 5px #0ff; }
     }
     
-    @keyframes borderCycle {
-      0% { border-color: #0ff; }
-      25% { border-color: #f0f; }
-      50% { border-color: #ff0; }
-      75% { border-color: #0ff; }
-      100% { border-color: #0ff; }
-    }
-    
-    @keyframes shadowCycle {
-      0% { text-shadow: 0 0 5px #0ff; }
-      25% { text-shadow: 0 0 5px #f0f; }
-      50% { text-shadow: 0 0 5px #ff0; }
-      75% { text-shadow: 0 0 5px #0ff; }
-      100% { text-shadow: 0 0 5px #0ff; }
+    /* Apply color cycling to specific elements */
+    .color-cycle {
+      animation: textColorCycle 10s infinite;
     }
     
     /* Main Container */
@@ -164,16 +152,38 @@
       animation: borderCycle 10s infinite;
     }
     
+    /* Wave Text Animation */
+    @keyframes waveText {
+      0%, 100% {
+        transform: translateY(0px);
+      }
+      20% {
+        transform: translateY(-5px);
+      }
+      40% {
+        transform: translateY(3px);
+      }
+      60% {
+        transform: translateY(-3px);
+      }
+      80% {
+        transform: translateY(5px);
+      }
+    }
+    
     .terminal-header h1 {
       font-size: 28px;
       letter-spacing: 3px;
       text-transform: uppercase;
-      background: linear-gradient(to right, #0ff, #f0f, #0ff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      color: #0ff;
+      text-shadow: 0 0 5px #0ff;
       margin: 0;
-      animation: colorCycle 10s infinite;
+      display: inline-block;
+    }
+    
+    .terminal-header h1 span {
+      display: inline-block;
+      animation: waveText 2s ease-in-out infinite;
     }
     
     .terminal-header::before {
@@ -259,7 +269,6 @@
       box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
       position: relative;
       overflow: hidden;
-      animation: borderCycle 10s infinite;
     }
     
     .terminal-section::before {
@@ -281,11 +290,14 @@
       margin-bottom: 15px;
       padding-bottom: 5px;
       border-bottom: 1px solid #f0f;
-      background: linear-gradient(to right, #0ff, #f0f, #0ff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      animation: shadowCycle 10s infinite;
+      color: #0ff;
+      text-shadow: 0 0 5px #0ff;
+      display: inline-block;
+    }
+    
+    .terminal-section h2 span {
+      display: inline-block;
+      animation: waveText 2s ease-in-out infinite;
     }
     
     .terminal-section h3 {
@@ -294,8 +306,14 @@
       font-size: 16px;
       margin-top: 0;
       margin-bottom: 10px;
+      color: #0ff;
       text-shadow: 0 0 3px #0ff;
-      animation: shadowCycle 10s infinite;
+      display: inline-block;
+    }
+    
+    .terminal-section h3 span {
+      display: inline-block;
+      animation: waveText 2s ease-in-out infinite;
     }
     
     /* Welcome Box */
@@ -305,7 +323,6 @@
       border: 1px solid #f0f;
       text-align: center;
       background: rgba(25, 0, 50, 0.3);
-      animation: borderCycle 10s infinite;
     }
     
     /* News Items */
@@ -406,7 +423,6 @@
       padding: 10px;
       border: 1px dashed #f0f;
       background: rgba(25, 0, 50, 0.2);
-      animation: borderCycle 10s infinite;
     }
     
     /* Blinking Elements */
@@ -423,7 +439,6 @@
       border-top: 1px solid #0ff;
       font-size: 12px;
       background: linear-gradient(90deg, rgba(0, 0, 0, 0.7), rgba(25, 0, 50, 0.7), rgba(0, 0, 0, 0.7));
-      animation: borderCycle 10s infinite;
     }
     
     .hit-counter {
@@ -503,7 +518,24 @@
   <div class="container">
     <!-- Terminal Header -->
     <div class="terminal-header">
-      <h1>Cam Le'S TERMINAL</h1>
+      <h1>
+        <span style="animation-delay: 0.0s;">P</span>
+        <span style="animation-delay: 0.1s;">U</span>
+        <span style="animation-delay: 0.2s;">F</span>
+        <span style="animation-delay: 0.3s;">F</span>
+        <span style="animation-delay: 0.4s;">Y</span>
+        <span style="animation-delay: 0.5s;">'</span>
+        <span style="animation-delay: 0.6s;">S</span>
+        <span style="animation-delay: 0.7s;"> </span>
+        <span style="animation-delay: 0.8s;">T</span>
+        <span style="animation-delay: 0.9s;">E</span>
+        <span style="animation-delay: 1.0s;">R</span>
+        <span style="animation-delay: 1.1s;">M</span>
+        <span style="animation-delay: 1.2s;">I</span>
+        <span style="animation-delay: 1.3s;">N</span>
+        <span style="animation-delay: 1.4s;">A</span>
+        <span style="animation-delay: 1.5s;">L</span>
+      </h1>
     </div>
     
     <!-- Navigation -->
@@ -519,8 +551,36 @@
       <!-- Main Content -->
       <div class="main-terminal">
         <div class="terminal-section">
-          <h2 class="typing-effect">WELCOME TO Cam Le'S TERMINAL</h2>
-          <p>I'M <span style="font-weight: bold; color: #f0f; text-shadow: 0 0 5px #f0f;">Cam Le</span>, YOUR SYSTEM ADMINISTRATOR. CHECK OUT MY LATEST LOGS BELOW.</p>
+          <h2 class="typing-effect color-cycle">
+            <span style="animation-delay: 0.0s;">W</span>
+            <span style="animation-delay: 0.1s;">E</span>
+            <span style="animation-delay: 0.2s;">L</span>
+            <span style="animation-delay: 0.3s;">C</span>
+            <span style="animation-delay: 0.4s;">O</span>
+            <span style="animation-delay: 0.5s;">M</span>
+            <span style="animation-delay: 0.6s;">E</span>
+            <span style="animation-delay: 0.7s;"> </span>
+            <span style="animation-delay: 0.8s;">T</span>
+            <span style="animation-delay: 0.9s;">O</span>
+            <span style="animation-delay: 1.0s;"> </span>
+            <span style="animation-delay: 1.1s;">P</span>
+            <span style="animation-delay: 1.2s;">U</span>
+            <span style="animation-delay: 1.3s;">F</span>
+            <span style="animation-delay: 1.4s;">F</span>
+            <span style="animation-delay: 1.5s;">Y</span>
+            <span style="animation-delay: 1.6s;">'</span>
+            <span style="animation-delay: 1.7s;">S</span>
+            <span style="animation-delay: 1.8s;"> </span>
+            <span style="animation-delay: 1.9s;">T</span>
+            <span style="animation-delay: 2.0s;">E</span>
+            <span style="animation-delay: 2.1s;">R</span>
+            <span style="animation-delay: 2.2s;">M</span>
+            <span style="animation-delay: 2.3s;">I</span>
+            <span style="animation-delay: 2.4s;">N</span>
+            <span style="animation-delay: 2.5s;">A</span>
+            <span style="animation-delay: 2.6s;">L</span>
+          </h2>
+          <p>I'M <span style="font-weight: bold; color: #f0f; text-shadow: 0 0 5px #f0f;">Cam</span>, YOUR SYSTEM ADMINISTRATOR. CHECK OUT MY LATEST LOGS BELOW.</p>
           
           <div class="news-item">
             <div class="news-date">> 03/22/2025:</div>
@@ -539,7 +599,25 @@
         </div>
         
         <div class="terminal-section">
-          <h2>ABOUT SYSTEM USER</h2>
+          <h2>
+            <span style="animation-delay: 0.0s;">A</span>
+            <span style="animation-delay: 0.1s;">B</span>
+            <span style="animation-delay: 0.2s;">O</span>
+            <span style="animation-delay: 0.3s;">U</span>
+            <span style="animation-delay: 0.4s;">T</span>
+            <span style="animation-delay: 0.5s;"> </span>
+            <span style="animation-delay: 0.6s;">S</span>
+            <span style="animation-delay: 0.7s;">Y</span>
+            <span style="animation-delay: 0.8s;">S</span>
+            <span style="animation-delay: 0.9s;">T</span>
+            <span style="animation-delay: 1.0s;">E</span>
+            <span style="animation-delay: 1.1s;">M</span>
+            <span style="animation-delay: 1.2s;"> </span>
+            <span style="animation-delay: 1.3s;">U</span>
+            <span style="animation-delay: 1.4s;">S</span>
+            <span style="animation-delay: 1.5s;">E</span>
+            <span style="animation-delay: 1.6s;">R</span>
+          </h2>
           <p>I'M JUST A <span style="color: #f0f; text-shadow: 0 0 5px #f0f;">SUPER COOL</span> SYSTEM ADMINISTRATOR WHO LOVES TERMINAL ACCESS! ONLINE SINCE 1998 AND LEARNING ASCII EVERY DAY!</p>
           
           <p>MY PROCESSES INCLUDE:</p>
@@ -556,7 +634,23 @@
         </div>
         
         <div class="terminal-section">
-          <h2>ACKNOWLEDGMENTS</h2>
+          <h2>
+            <span style="animation-delay: 0.0s;">A</span>
+            <span style="animation-delay: 0.1s;">C</span>
+            <span style="animation-delay: 0.2s;">K</span>
+            <span style="animation-delay: 0.3s;">N</span>
+            <span style="animation-delay: 0.4s;">O</span>
+            <span style="animation-delay: 0.5s;">W</span>
+            <span style="animation-delay: 0.6s;">L</span>
+            <span style="animation-delay: 0.7s;">E</span>
+            <span style="animation-delay: 0.8s;">D</span>
+            <span style="animation-delay: 0.9s;">G</span>
+            <span style="animation-delay: 1.0s;">M</span>
+            <span style="animation-delay: 1.1s;">E</span>
+            <span style="animation-delay: 1.2s;">N</span>
+            <span style="animation-delay: 1.3s;">T</span>
+            <span style="animation-delay: 1.4s;">S</span>
+          </h2>
           <div class="shoutouts">
             SPECIAL THANKS TO:<br>
             > <span style="color: #0ff;">COOLDUDE92</span> FOR HELPING WITH ASCII TIPS<br>
@@ -594,7 +688,21 @@
         </div>
         
         <div class="terminal-section">
-          <h3 style="text-align: center; color: #ff0; text-shadow: 0 0 5px #ff0;">NETWORK NODES</h3>
+          <h3 style="text-align: center; color: #ff0; text-shadow: 0 0 5px #ff0;">
+            <span style="animation-delay: 0.0s;">N</span>
+            <span style="animation-delay: 0.1s;">E</span>
+            <span style="animation-delay: 0.2s;">T</span>
+            <span style="animation-delay: 0.3s;">W</span>
+            <span style="animation-delay: 0.4s;">O</span>
+            <span style="animation-delay: 0.5s;">R</span>
+            <span style="animation-delay: 0.6s;">K</span>
+            <span style="animation-delay: 0.7s;"> </span>
+            <span style="animation-delay: 0.8s;">N</span>
+            <span style="animation-delay: 0.9s;">O</span>
+            <span style="animation-delay: 1.0s;">D</span>
+            <span style="animation-delay: 1.1s;">E</span>
+            <span style="animation-delay: 1.2s;">S</span>
+          </h3>
           <ul class="cool-links">
             <li><a href="#">AWESOME GAMES</a></li>
             <li><a href="#">PIXEL ART GALLERY</a></li>
@@ -619,7 +727,7 @@
             <div style="border: 1px dashed #0ff; padding: 5px; background: rgba(0, 25, 50, 0.3);">
               <div style="font-size: 12px; color: #ff0;">MESSAGE ME:</div>
               <div style="font-weight: bold;">
-                <a href="mailto:Cam Le@terminal.com" style="color: #0ff; text-decoration: none; text-shadow: 0 0 5px #0ff;">Cam Le@TERMINAL.COM</a>
+                <a href="mailto:Cam@terminal.com" style="color: #0ff; text-decoration: none; text-shadow: 0 0 5px #0ff;">Cam@TERMINAL.COM</a>
               </div>
             </div>
           </div>
@@ -638,7 +746,7 @@
         <a href="#" style="color: #0ff; text-decoration: none; margin: 0 5px; text-shadow: 0 0 5px #0ff;">GUESTBOOK</a> | 
         <a href="#" style="color: #f0f; text-decoration: none; margin: 0 5px; text-shadow: 0 0 5px #f0f;">CONTACT</a>
       </div>
-      <div style="margin-top: 10px; font-size: 10px; color: #ff0; text-shadow: 0 0 3px #ff0;">© 2025 Cam Le'S TERMINAL - LAST UPDATE: 03/22/2025</div>
+      <div style="margin-top: 10px; font-size: 10px; color: #ff0; text-shadow: 0 0 3px #ff0;">© 2025 Cam'S TERMINAL - LAST UPDATE: 03/22/2025</div>
     </div>
   </div>
   
