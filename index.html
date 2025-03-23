@@ -118,7 +118,7 @@
       50%, 100% { opacity: 0; }
     }
     
-    /* Color Cycling for Text */
+    /* Color Cycling Animations */
     @keyframes textColorCycle {
       0% { color: #0ff; text-shadow: 0 0 5px #0ff; }
       33% { color: #f0f; text-shadow: 0 0 5px #f0f; }
@@ -126,9 +126,20 @@
       100% { color: #0ff; text-shadow: 0 0 5px #0ff; }
     }
     
+    @keyframes borderCycle {
+      0% { border-color: #0ff; box-shadow: 0 0 15px rgba(0, 255, 255, 0.3); }
+      33% { border-color: #f0f; box-shadow: 0 0 15px rgba(255, 0, 255, 0.3); }
+      66% { border-color: #ff0; box-shadow: 0 0 15px rgba(255, 255, 0, 0.3); }
+      100% { border-color: #0ff; box-shadow: 0 0 15px rgba(0, 255, 255, 0.3); }
+    }
+    
     /* Apply color cycling to specific elements */
     .color-cycle {
       animation: textColorCycle 10s infinite;
+    }
+    
+    .border-cycle {
+      animation: borderCycle 10s infinite;
     }
     
     /* Main Container */
@@ -269,6 +280,7 @@
       box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
       position: relative;
       overflow: hidden;
+      animation: borderCycle 10s infinite;
     }
     
     .terminal-section::before {
@@ -439,6 +451,7 @@
       border-top: 1px solid #0ff;
       font-size: 12px;
       background: linear-gradient(90deg, rgba(0, 0, 0, 0.7), rgba(25, 0, 50, 0.7), rgba(0, 0, 0, 0.7));
+      animation: borderCycle 10s infinite;
     }
     
     .hit-counter {
@@ -711,7 +724,7 @@
         
         <div class="terminal-section">
           <div style="text-align: center;">
-            <div style="border: 1px dashed #f0f; padding: 5px; background: rgba(25, 0, 50, 0.3);">
+                          <div style="border: 1px dashed #f0f; padding: 5px; background: rgba(25, 0, 50, 0.3); animation: borderCycle 10s infinite;">
               <div style="font-weight: bold; color: #0ff; text-shadow: 0 0 5px #0ff;">SIGN MY</div>
               <div style="font-weight: bold; color: #f0f; text-shadow: 0 0 5px #f0f;">GUESTBOOK!</div>
             </div>
@@ -720,7 +733,7 @@
         
         <div class="terminal-section">
           <div style="text-align: center;">
-            <div style="border: 1px dashed #0ff; padding: 5px; background: rgba(0, 25, 50, 0.3);">
+                          <div style="border: 1px dashed #0ff; padding: 5px; background: rgba(0, 25, 50, 0.3); animation: borderCycle 10s infinite;">
               <div style="font-size: 12px; color: #ff0;">MESSAGE ME:</div>
               <div style="font-weight: bold;">
                 <a href="mailto:cam@terminal.com" style="color: #0ff; text-decoration: none; text-shadow: 0 0 5px #0ff;">CAM@TERMINAL.COM</a>
@@ -734,7 +747,7 @@
     <!-- Footer -->
     <div class="terminal-footer">
       <div>OPTIMAL VIEWING: SYNTHWAVE MODE | BAUD RATE: 9600</div>
-      <div>VISITORS: <span class="hit-counter">000528</span></div>
+      <div>VISITORS: <span class="hit-counter" style="animation: borderCycle 10s infinite;">000528</span></div>
       <div style="margin-top: 10px;">
         <a href="#" style="color: #0ff; text-decoration: none; margin: 0 5px; text-shadow: 0 0 5px #0ff;">HOME</a> | 
         <a href="#" style="color: #f0f; text-decoration: none; margin: 0 5px; text-shadow: 0 0 5px #f0f;">ABOUT</a> | 
