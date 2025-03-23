@@ -1,71 +1,697 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Cam Le'S TERMINAL - NEON GRID v.85</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Colors</title>
-  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* Base Styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      background-color: #000;
+      color: #0ff;
+      font-family: 'Courier New', monospace;
+      line-height: 1.4;
+      margin: 0;
+      padding: 0;
+      position: relative;
+      overflow-x: hidden;
+    }
+    
+    /* CRT Effects */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
+      background-size: 100% 4px;
+      pointer-events: none;
+      z-index: 999;
+    }
+    
+    body::after {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        linear-gradient(0deg, rgba(255, 0, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 20px 20px;
+      pointer-events: none;
+      z-index: 998;
+    }
+    
+    /* Background Grid Animation */
+    @keyframes gridMove {
+      0% { background-position: 0 0; }
+      100% { background-position: 20px 20px; }
+    }
+    
+    .grid-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        linear-gradient(90deg, rgba(0, 0, 0, 0) 98%, rgba(255, 0, 128, 0.1) 2%),
+        linear-gradient(0deg, rgba(0, 0, 0, 0) 98%, rgba(0, 255, 255, 0.1) 2%);
+      background-size: 30px 30px;
+      transform: perspective(500px) rotateX(30deg);
+      transform-origin: center bottom;
+      z-index: -1;
+      animation: gridMove 10s linear infinite;
+      opacity: 0.7;
+    }
+    
+    /* Noise Animation */
+    @keyframes noise {
+      0%, 100% { opacity: 0.03; }
+      50% { opacity: 0.02; }
+    }
+    
+    .noise {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAWhSURBVGhD7ZpLbBVVGMfPzJ3b+6BtaGvfD9oCgvKMRNCFCQbQxMRH4kIXJu5MXLlwIbpwYeLShQsTY+JGTYwJGDG+okYJGhJEQZ4FpPQBpYW2t+3tvY/x/83M3HvnTjszd9rSmPSXfDkz53zn+84355w5Z6ZCCCG2hGek518G1C+y2MsvpLmUCMHc3/G44Wc2NKGLMVmdOZdJ3jYYtE0y6ZBd7nJXLHTZseu+cFH2UrY5xt0l6mPcEnbv4SLgYoNlSJ6VYWQow7mJy+SdpbJXgW3NpbXGvOVSaVIwqMmIJXONtVipSZNWDw7ZhsR9dkd67ZZfhzwxcmQpAzEn25BbwxMjR1Xew5ERa2hkJAcaGcmBRkZyoJGRHGhkJAcaGcmBRkZyoJGRHGhkJAca1bHEErLFXuHIiVscSSwh3VzlPiHLmDO32BVn2Vrkfv1/gJXZyEuO12Qny5Bt+jHXP4PULgJu3P2fGVlprmA/pHdYauJTRoJIbJO2R8dJW90PnMuvmw0sspG2UqtWqI/BM0kkTM/kE7CQc3aSvUF+T38n7mfn+OVZiHV3TQGVsYq9oBrhlJmg1oSF7NGOMvdKOhzWUSp3aN9xn5nG+QP8cgz4b0QqY7N9n33C3nUq40FXHbvaL8qvUSRzSftCPs8+LJ9Hcog1sKPsM+MV/zXOiE+LpdwVUWFHsC3pPXrXmcCDLOc68avysz7U3qC9aLyuLmvV5SX5iRvB3qofV5fTv6rL0RPqsvZR7XWn7oCyDBFdpjfpJ+VJJrE/OE+ywO8Cc/XfZhH/VrxHf+b3A/kV7Aj7IHHNwPY5J1xOMZ1xA/9RGlC63UkC5Fn36TwzYJmwbdouZxJVkDOJe1W5y7eV5sxlhb7d3iuV84DVaKnbRGKxvsgRz5/UhXzVeUkbS16lHXJeUU8z2Cuy3x6xt+tf8X+dFCgLxALGhT33DQNsFgvEaUx4UfuEgR3lPEkm92hIVsAGEE7JKXGBXxSJ/D0nXDKbVZwwdoYJTIRNzhcOCTxLcEwKNnCTX6bI5Vl1SoVJdZmeLq/D4whCrImNFd6iP3BkEtmh3iAmMFsmuUW4EKLcUr/UThgDsZDJQnNiUJQtWxY6vaSLfb6dOPEE9pKZeDw2eTJkO4/TXpRjhSq2nC78mA2wn7jfVmWFUmM55bnlOQvp4tZ1c5d1yDyuDvK7Q+wGve3s94QaS2AzBnqCXSA37Dw/g7FecgY3KBMj51itHGUX2CXuZ+KydZ3ftDapQ9YRdoT/x3kDPYd47lfYzTPSj+OGmkEpbX2CcnIz8ZJc7naOKdvUw7F0rvJeL6BnLOAIEaZrVZVeHnO2lYZTn0Tg2Wm5H3W2A5fN1EXzZ/aTeZfz9BTfgOJlkO1XBnRDO8GOM2c8WcjvapE8hj17qpPmkMqNlCjJwGfOi8ZOc7c2wC85I5NnXLeVz3UxLJj4/fRDdZTc0j4zTlk4Qw9FX36J4oGAk62m9Gr2tLHdXmtsszaIlWKNmNMzl5rDCbE59Z7+pXnWOsVPzn4n7Y8vx4oEm/Gqc0g7ofXp37EhdoZPzpLqzGg/G5XsCv9F+8H6xb6on7CO0sP6EG1PP2ntpbvwD2t9s0cWIvusvdZfxlHrDHWjh9aP7Ay2tCa5O43mLfZP9mn+i32G/S5vjB5a2pR+2L5s7bcxcTxpjPDLrPYDd/S8fYn9bF627lq4ZpA2eNMc5JfzO3y5jB0ZGi4Vw1L1gWbcHLUH+Rn9qogXA9c2gDWjZPcZ+2aHvTIXf+/XWa1c8l1Oi/fKJd8jvzEUx5K1WDkjqgr0+T/P/ygC/gK3/YZHuRxBZgAAAABJRU5ErkJggg==");
+      opacity: 0.03;
+      pointer-events: none;
+      z-index: 997;
+      animation: noise 0.5s infinite;
+    }
+    
+    /* Sun/Circle Animation */
+    @keyframes rotateSun {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    .sun {
+      position: fixed;
+      right: 50px;
+      top: 50px;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(255, 0, 128, 0.3), rgba(0, 255, 255, 0));
+      box-shadow: 0 0 50px rgba(255, 0, 128, 0.5);
+      z-index: -2;
+      opacity: 0.6;
+    }
+    
+    /* Blinking Cursor Animation */
+    @keyframes blink {
+      0%, 49% { opacity: 1; }
+      50%, 100% { opacity: 0; }
+    }
+    
+    /* Color Palette Animations */
+    @keyframes colorCycle {
+      0% { color: #0ff; }
+      25% { color: #f0f; }
+      50% { color: #ff0; }
+      75% { color: #0ff; }
+      100% { color: #0ff; }
+    }
+    
+    @keyframes borderCycle {
+      0% { border-color: #0ff; }
+      25% { border-color: #f0f; }
+      50% { border-color: #ff0; }
+      75% { border-color: #0ff; }
+      100% { border-color: #0ff; }
+    }
+    
+    @keyframes shadowCycle {
+      0% { text-shadow: 0 0 5px #0ff; }
+      25% { text-shadow: 0 0 5px #f0f; }
+      50% { text-shadow: 0 0 5px #ff0; }
+      75% { text-shadow: 0 0 5px #0ff; }
+      100% { text-shadow: 0 0 5px #0ff; }
+    }
+    
+    /* Main Container */
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      position: relative;
+      z-index: 1;
+    }
+    
+    /* Terminal Header */
+    .terminal-header {
+      text-align: center;
+      margin-bottom: 20px;
+      padding: 10px;
+      border: 2px solid #f0f;
+      background: rgba(0, 0, 0, 0.7);
+      box-shadow: 0 0 20px rgba(255, 0, 255, 0.4), inset 0 0 10px rgba(0, 255, 255, 0.2);
+      position: relative;
+      animation: borderCycle 10s infinite;
+    }
+    
+    .terminal-header h1 {
+      font-size: 28px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      background: linear-gradient(to right, #0ff, #f0f, #0ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin: 0;
+      animation: colorCycle 10s infinite;
+    }
+    
+    .terminal-header::before {
+      content: "[SYSTEM ONLINE]";
+      position: absolute;
+      top: 5px;
+      left: 10px;
+      font-size: 12px;
+      color: #ff0;
+      text-shadow: 0 0 5px #ff0;
+    }
+    
+    .terminal-header::after {
+      content: "V.85.2025";
+      position: absolute;
+      top: 5px;
+      right: 10px;
+      font-size: 12px;
+      color: #0ff;
+      text-shadow: 0 0 5px #0ff;
+    }
+    
+    /* Navigation */
+    .terminal-nav {
+      margin-bottom: 20px;
+      text-align: center;
+      padding: 10px;
+      border-bottom: 1px solid #0ff;
+      background: linear-gradient(90deg, rgba(0, 0, 0, 0.7), rgba(25, 0, 50, 0.7), rgba(0, 0, 0, 0.7));
+      animation: borderCycle 10s infinite;
+    }
+    
+    .terminal-nav a {
+      color: #0ff;
+      text-decoration: none;
+      margin: 0 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      position: relative;
+      transition: all 0.3s ease;
+      text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+    }
+    
+    .terminal-nav a:hover {
+      color: #f0f;
+      text-shadow: 0 0 10px #f0f;
+    }
+    
+    .terminal-nav a:hover::after {
+      content: "";
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(to right, #0ff, #f0f, #0ff);
+      box-shadow: 0 0 5px #f0f;
+    }
+    
+    /* Content Layout */
+    .terminal-content {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    
+    .main-terminal {
+      flex: 2;
+      min-width: 300px;
+    }
+    
+    .sidebar-terminal {
+      flex: 1;
+      min-width: 200px;
+    }
+    
+    /* Terminal Sections */
+    .terminal-section {
+      margin-bottom: 20px;
+      padding: 15px;
+      border: 1px solid #0ff;
+      background: rgba(0, 0, 0, 0.7);
+      box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+      position: relative;
+      overflow: hidden;
+      animation: borderCycle 10s infinite;
+    }
+    
+    .terminal-section::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(to right, #0ff, #f0f, #0ff);
+      z-index: 2;
+    }
+    
+    .terminal-section h2 {
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-size: 18px;
+      margin-top: 0;
+      margin-bottom: 15px;
+      padding-bottom: 5px;
+      border-bottom: 1px solid #f0f;
+      background: linear-gradient(to right, #0ff, #f0f, #0ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shadowCycle 10s infinite;
+    }
+    
+    .terminal-section h3 {
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-size: 16px;
+      margin-top: 0;
+      margin-bottom: 10px;
+      text-shadow: 0 0 3px #0ff;
+      animation: shadowCycle 10s infinite;
+    }
+    
+    /* Welcome Box */
+    .welcome-terminal {
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #f0f;
+      text-align: center;
+      background: rgba(25, 0, 50, 0.3);
+      animation: borderCycle 10s infinite;
+    }
+    
+    /* News Items */
+    .news-item {
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 1px dotted #0ff;
+    }
+    
+    .news-date {
+      font-weight: bold;
+      margin-bottom: 5px;
+      color: #ff0;
+      text-shadow: 0 0 5px rgba(255, 255, 0, 0.5);
+    }
+    
+    /* Button Styles */
+    .terminal-button {
+      display: inline-block;
+      background: linear-gradient(to right, #0ff, #f0f);
+      color: #000;
+      padding: 8px 15px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-weight: bold;
+      border: none;
+      margin: 10px 0;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .terminal-button::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(rgba(255,255,255,0), rgba(255,255,255,0.2), rgba(255,255,255,0));
+      transform: rotate(30deg);
+      animation: shine 3s infinite;
+    }
+    
+    @keyframes shine {
+      0% {
+        left: -50%;
+        top: -50%;
+      }
+      100% {
+        left: 100%;
+        top: 100%;
+      }
+    }
+    
+    .terminal-button:hover {
+      background: linear-gradient(to right, #f0f, #0ff);
+      box-shadow: 0 0 15px rgba(255, 0, 255, 0.7);
+      transform: scale(1.05);
+    }
+    
+    /* Links */
+    .cool-links {
+      list-style-type: none;
+      padding-left: 0;
+    }
+    
+    .cool-links li {
+      margin-bottom: 8px;
+      padding-left: 15px;
+      position: relative;
+    }
+    
+    .cool-links li::before {
+      content: ">";
+      position: absolute;
+      left: 0;
+      top: 0;
+      color: #f0f;
+      animation: blink 1s infinite;
+    }
+    
+    .cool-links a {
+      color: #0ff;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+    
+    .cool-links a:hover {
+      color: #f0f;
+      text-shadow: 0 0 10px #f0f;
+    }
+    
+    /* Shoutouts */
+    .shoutouts {
+      padding: 10px;
+      border: 1px dashed #f0f;
+      background: rgba(25, 0, 50, 0.2);
+      animation: borderCycle 10s infinite;
+    }
+    
+    /* Blinking Elements */
+    .blink {
+      animation: blink 1s infinite;
+      color: #ff0;
+    }
+    
+    /* Footer */
+    .terminal-footer {
+      text-align: center;
+      padding: 15px;
+      margin-top: 20px;
+      border-top: 1px solid #0ff;
+      font-size: 12px;
+      background: linear-gradient(90deg, rgba(0, 0, 0, 0.7), rgba(25, 0, 50, 0.7), rgba(0, 0, 0, 0.7));
+      animation: borderCycle 10s infinite;
+    }
+    
+    .hit-counter {
+      display: inline-block;
+      background-color: rgba(0, 0, 0, 0.7);
+      color: #ff0;
+      padding: 3px 8px;
+      border: 1px solid #f0f;
+      font-family: 'Courier New', monospace;
+      letter-spacing: 2px;
+      box-shadow: 0 0 10px rgba(255, 0, 255, 0.5);
+      margin: 10px 0;
+      text-shadow: 0 0 5px #ff0;
+    }
+    
+    /* Typing Effect */
+    .typing-effect::after {
+      content: "_";
+      animation: blink 1s infinite;
+    }
+    
+    /* VHS Effect */
+    @keyframes vhsNoise {
+      0%, 100% { opacity: 0; }
+      10%, 90% { opacity: 0.01; }
+      50% { opacity: 0.02; }
+    }
+    
+    .vhs-effect {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(rgba(50, 50, 50, 0.1), rgba(50, 50, 50, 0)),
+                  repeating-linear-gradient(transparent, rgba(255, 0, 255, 0.03) 1px, transparent 2px);
+      pointer-events: none;
+      z-index: 990;
+      animation: vhsNoise 2s infinite;
+    }
+    
+    /* Responsive Adjustments */
+    @media (max-width: 600px) {
+      .terminal-content {
+        flex-direction: column;
+      }
+      
+      .main-terminal, .sidebar-terminal {
+        width: 100%;
+        min-width: 100%;
+      }
+      
+      .terminal-header h1 {
+        font-size: 20px;
+      }
+      
+      .terminal-nav a {
+        margin: 0 5px;
+        font-size: 14px;
+      }
+      
+      .sun {
+        width: 100px;
+        height: 100px;
+        right: 20px;
+        top: 20px;
+      }
+    }
+  </style>
 </head>
-
 <body>
-  <header>
-    <h1 id="top">Colors!</h1>
-  </header>
-
-  <main>
-    <h2>Basic Media Queries</h2>
-    <p>In this assignment you will add two media queries to the css file.</p>
-    <ul>
-      <li>The first media query should trigger at 772px and change the layout of the divs to be 45% of the viewport width. The images should have a maximum height of 30% of the viewport height.</li>
-
-      <li>The second media query should trigger at 998px and change the layout of the divs to be 30% of the viewport width.</li>
-    </ul>
-    <p>You will need to make additional changes to ensure that the divs appear next to each other and that the images are contained within the divs.  Some of these properties include display, width and max-height.</p>
-
-    <div>
-      <img src="images/Red.jpeg" alt="Red" width="200">
-      <p class = "label">Red</p>
+  <div class="noise"></div>
+  <div class="grid-bg"></div>
+  <div class="sun"></div>
+  <div class="vhs-effect"></div>
+  
+  <div class="container">
+    <!-- Terminal Header -->
+    <div class="terminal-header">
+      <h1>Cam Le'S TERMINAL</h1>
     </div>
-    <div>
-      <img src="images/Orange.png" alt="Orange" width="200">
-      <p class = "label">Orange</p>
+    
+    <!-- Navigation -->
+    <div class="terminal-nav">
+      <a href="#">HOME</a> | 
+      <a href="#">ABOUT</a> | 
+      <a href="#">LINKS</a> | 
+      <a href="#">GUESTBOOK</a> | 
+      <a href="#">CONTACT</a>
     </div>
-    <div>
-      <img src="images/Yellow.png" alt="Yellow" width="200">
-      <p class = "label">Yellow</p>
+    
+    <div class="terminal-content">
+      <!-- Main Content -->
+      <div class="main-terminal">
+        <div class="terminal-section">
+          <h2 class="typing-effect">WELCOME TO Cam Le'S TERMINAL</h2>
+          <p>I'M <span style="font-weight: bold; color: #f0f; text-shadow: 0 0 5px #f0f;">Cam Le</span>, YOUR SYSTEM ADMINISTRATOR. CHECK OUT MY LATEST LOGS BELOW.</p>
+          
+          <div class="news-item">
+            <div class="news-date">> 03/22/2025:</div>
+            <div class="news-content">JUST ADDED <span class="blink">NEW LINKS</span> TO COOL SITES! CHECK THEM OUT IN THE SIDEBAR!</div>
+          </div>
+          
+          <div class="news-item">
+            <div class="news-date">> 03/15/2025:</div>
+            <div class="news-content">WOW, <span style="color: #0ff; text-shadow: 0 0 5px #0ff;">500 VISITORS</span>! THANKS FOR ACCESSING! DON'T FORGET TO SIGN MY GUESTBOOK.</div>
+          </div>
+          
+          <div class="news-item">
+            <div class="news-date">> 03/10/2025:</div>
+            <div class="news-content">ADDED A NEW SECTION ABOUT MY <span style="color: #f0f; text-shadow: 0 0 5px #f0f;">PIXEL ART COLLECTION</span>. MORE COMING SOON!</div>
+          </div>
+        </div>
+        
+        <div class="terminal-section">
+          <h2>ABOUT SYSTEM USER</h2>
+          <p>I'M JUST A <span style="color: #f0f; text-shadow: 0 0 5px #f0f;">SUPER COOL</span> SYSTEM ADMINISTRATOR WHO LOVES TERMINAL ACCESS! ONLINE SINCE 1998 AND LEARNING ASCII EVERY DAY!</p>
+          
+          <p>MY PROCESSES INCLUDE:</p>
+          <div style="margin-left: 20px;">
+            > <span style="color: #0ff;">PIXEL ART</span><br>
+            > <span style="color: #f0f;">TERMINAL DESIGN</span><br>
+            > <span style="color: #ff0;">VIDEO GAMES</span><br>
+            > <span style="color: #0ff;">COLLECTING ASCII ART</span>
+          </div>
+          
+          <div style="text-align: center; margin: 15px 0;">
+            <a href="#" class="terminal-button">EXECUTE</a>
+          </div>
+        </div>
+        
+        <div class="terminal-section">
+          <h2>ACKNOWLEDGMENTS</h2>
+          <div class="shoutouts">
+            SPECIAL THANKS TO:<br>
+            > <span style="color: #0ff;">COOLDUDE92</span> FOR HELPING WITH ASCII TIPS<br>
+            > <span style="color: #f0f;">PIXELMASTER</span> FOR THE AWESOME GRAPHICS<br>
+            > <span style="color: #ff0;">MOM</span> FOR PAYING FOR THE INTERNET CONNECTION!
+          </div>
+        </div>
+      </div>
+      
+      <!-- Sidebar -->
+      <div class="sidebar-terminal">
+        <div class="terminal-section">
+          <div class="welcome-terminal">
+            <h3 style="color: #ff0; text-shadow: 0 0 5px #ff0;">ACCESS GRANTED</h3>
+            <p>WELCOME TO MY SECTOR OF THE GRID!</p>
+          </div>
+        </div>
+        
+        <div class="terminal-section">
+          <div class="blink" style="text-align: center; margin-bottom: 10px;">
+            SYSTEM MAINTENANCE
+          </div>
+          <div style="text-align: center; font-size: 12px; color: #f0f;">
+            SOME SECTORS STILL BEING DEBUGGED!
+          </div>
+        </div>
+        
+        <div class="terminal-section">
+          <pre style="text-align: center; font-size: 12px; color: #0ff; text-shadow: 0 0 5px #0ff;">
+ /\    
+/  \   
+|[]|   
+|__|   
+          </pre>
+        </div>
+        
+        <div class="terminal-section">
+          <h3 style="text-align: center; color: #ff0; text-shadow: 0 0 5px #ff0;">NETWORK NODES</h3>
+          <ul class="cool-links">
+            <li><a href="#">AWESOME GAMES</a></li>
+            <li><a href="#">PIXEL ART GALLERY</a></li>
+            <li><a href="#">MY FRIEND'S TERMINAL</a></li>
+            <li><a href="#">FREE ASCII ART!</a></li>
+            <li><a href="#">WEB RINGS</a></li>
+            <li><a href="#">FUN EXECUTABLES</a></li>
+          </ul>
+        </div>
+        
+        <div class="terminal-section">
+          <div style="text-align: center;">
+            <div style="border: 1px dashed #f0f; padding: 5px; background: rgba(25, 0, 50, 0.3);">
+              <div style="font-weight: bold; color: #0ff; text-shadow: 0 0 5px #0ff;">SIGN MY</div>
+              <div style="font-weight: bold; color: #f0f; text-shadow: 0 0 5px #f0f;">GUESTBOOK!</div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="terminal-section">
+          <div style="text-align: center;">
+            <div style="border: 1px dashed #0ff; padding: 5px; background: rgba(0, 25, 50, 0.3);">
+              <div style="font-size: 12px; color: #ff0;">MESSAGE ME:</div>
+              <div style="font-weight: bold;">
+                <a href="mailto:Cam Le@terminal.com" style="color: #0ff; text-decoration: none; text-shadow: 0 0 5px #0ff;">Cam Le@TERMINAL.COM</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div>
-      <img src="images/Green.png" alt="Green" width="200">
-      <p class = "label">Green</p>
+    
+    <!-- Footer -->
+    <div class="terminal-footer">
+      <div>OPTIMAL VIEWING: SYNTHWAVE MODE | BAUD RATE: 9600</div>
+      <div>VISITORS: <span class="hit-counter">000528</span></div>
+      <div style="margin-top: 10px;">
+        <a href="#" style="color: #0ff; text-decoration: none; margin: 0 5px; text-shadow: 0 0 5px #0ff;">HOME</a> | 
+        <a href="#" style="color: #f0f; text-decoration: none; margin: 0 5px; text-shadow: 0 0 5px #f0f;">ABOUT</a> | 
+        <a href="#" style="color: #ff0; text-decoration: none; margin: 0 5px; text-shadow: 0 0 5px #ff0;">LINKS</a> | 
+        <a href="#" style="color: #0ff; text-decoration: none; margin: 0 5px; text-shadow: 0 0 5px #0ff;">GUESTBOOK</a> | 
+        <a href="#" style="color: #f0f; text-decoration: none; margin: 0 5px; text-shadow: 0 0 5px #f0f;">CONTACT</a>
+      </div>
+      <div style="margin-top: 10px; font-size: 10px; color: #ff0; text-shadow: 0 0 3px #ff0;">© 2025 Cam Le'S TERMINAL - LAST UPDATE: 03/22/2025</div>
     </div>
-    <div>
-      <img src="images/Blue.png" alt="Blue" width="200">
-      <p class = "label">Blue</p>
-    </div>
-    <div>
-      <img src="images/Indigo.jpeg" alt="Indigo" width="200">
-      <p class = "label">Indigo</p>
-    </div>
-    <div>
-      <img src="images/Purple.png" alt="Purple" width="200">
-      <p class = "label">Purple</p>
-    </div>
-    <div>
-      <img src="images/Pink.jpeg" alt="Pink" width="200">
-      <p class = "label">Pink</p>
-    </div>
-    <div>
-      <img src="images/White.png" alt="White" width="200">
-      <p class = "label">White</p>
-    </div>
-    </div>
-  </main>
-
-  <footer>
-    <a href="#top">Jump to the Top</a>
-  </footer>
+  </div>
+  
+  <script>
+    // Add visual effects for vaporwave aesthetic
+    document.addEventListener('DOMContentLoaded', function() {
+      const terminalSections = document.querySelectorAll('.terminal-section');
+      
+      // Add subtle flicker effect to terminal sections
+      terminalSections.forEach(section => {
+        setInterval(() => {
+          const opacity = Math.random() * 0.1 + 0.9;
+          section.style.opacity = opacity;
+        }, 2000 + Math.random() * 3000);
+      });
+      
+      // Add palm tree silhouette
+      const container = document.querySelector('.container');
+      const palm = document.createElement('div');
+      palm.style.position = 'fixed';
+      palm.style.bottom = '0';
+      palm.style.left = '10%';
+      palm.style.width = '150px';
+      palm.style.height = '300px';
+      palm.style.background = 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 200\'%3E%3Cpath d=\'M50,200 L60,150 C70,130 75,100 50,80 C25,100 30,130 40,150 Z M50,80 C60,60 55,40 45,20 M50,80 C40,60 45,40 55,20 M50,80 C70,70 75,50 80,30 M50,80 C30,70 25,50 20,30\' stroke=\'%23000000\' fill=\'none\'/%3E%3C/svg%3E")';
+      palm.style.backgroundSize = 'contain';
+      palm.style.backgroundRepeat = 'no-repeat';
+      palm.style.zIndex = '-2';
+      palm.style.opacity = '0.7';
+      palm.style.filter = 'drop-shadow(0 0 10px rgba(255,0,255,0.5))';
+      document.body.appendChild(palm);
+      
+      // Add sunset gradient to background
+      const sunset = document.createElement('div');
+      sunset.style.position = 'fixed';
+      sunset.style.bottom = '0';
+      sunset.style.left = '0';
+      sunset.style.width = '100%';
+      sunset.style.height = '40%';
+      sunset.style.background = 'linear-gradient(to top, rgba(255,100,50,0.2), rgba(255,0,128,0.1), rgba(50,0,80,0))';
+      sunset.style.zIndex = '-3';
+      document.body.appendChild(sunset);
+      
+      // Random glitch effect
+      setInterval(() => {
+        if (Math.random() > 0.95) {
+          document.body.style.filter = `hue-rotate(${Math.random() * 30}deg)`;
+          setTimeout(() => {
+            document.body.style.filter = 'none';
+          }, 100);
+        }
+      }, 2000);
+    });
+  </script>
 </body>
-
 </html>
